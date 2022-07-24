@@ -35,7 +35,7 @@ $>make
 $>make install
 ```
 
-Then manually add ```C:\CPPS\bin``` to the environment variable *Path* or use the *cmd* script ```install-cpps.cmd``` to build and install *cpps*.<br>
+Then manually add ```~/local/bin``` to the environment variable *Path*.<br>
 <br><br>
 
 ## How to use
