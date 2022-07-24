@@ -7,7 +7,7 @@ BIN=$(BINDIR)/cpps
 OBJ=$(OBJDIR)/*.o
 CFILES=$(SRCDIR)/*.c
 
-CC=mingw32-gcc-9.2.0
+CC=gcc
 CFLAGS=-g -pedantic -Wall
 
 
@@ -34,8 +34,8 @@ test: $(TESTDIR)/bin/test
 $(TESTDIR)/bin/test: $(TESTDIR)/*.o
 	$(CC) -o $(TESTDIR)/bin/test $(TESTDIR)/*.o
 
-$(TESTDIR)/*.o: $(TESTDIR)/src/*.c $(SRCDIR)/functions.c $(SRCDIR)/functions.h
-	$(CC) -c $(TESTDIR)/src/*.c $(SRCDIR)/functions.c $(SRCDIR)/functions.h $(CFLAGS)
+$(TESTDIR)/*.o: $(TESTDIR)/src/*.c $(SRCDIR)/functions.c $(SRCDIR)/functions.h $(SRCDIR)/commands.c $(SRCDIR)/commands.h
+	$(CC) -c $(TESTDIR)/src/*.c $(SRCDIR)/functions.c $(SRCDIR)/functions.h $(SRCDIR)/commands.c $(SRCDIR)/commands.h $(CFLAGS)
 
 	@mv *.o $(TESTDIR)/
 
@@ -45,33 +45,38 @@ clean:
 
 clean-test:
 	rm -f $(TESTDIR)/bin/* $(TESTDIR)/*.o $(TESTDIR)/*.c
+	rm -f $(TESTDIR)/NewProject/Makefile $(TESTDIR)/NewProject/src/*.c
 	rmdir $(TESTDIR)/testproject/bin $(TESTDIR)/testproject/src $(TESTDIR)/testproject
+	rmdir $(TESTDIR)/NewProject/bin $(TESTDIR)/NewProject/src $(TESTDIR)/NewProject
 	rm -f $(TESTDIR)/Makefile
 
 distclean: clean
 	rmdir $(OBJDIR)/ $(BINDIR)
-	rm -f C-Programming-Project-Setup-0.1.1-alpha.2-win-release.tar
-	rm -f C-Programming-Project-Setup-0.1.1-alpha.2-win-debug.tar
-	rm -f C-Programming-Project-Setup-0.1.1-alpha.2-win-source.tar
+	rm -f C-Programming-Project-Setup-0.1.1-alpha.2-mingw32-release.tar
+	rm -f C-Programming-Project-Setup-0.1.1-alpha.2-mingw32-debug.tar
+	rm -f C-Programming-Project-Setup-0.1.1-alpha.2-mingw32-source.tar
 
 
-archive-source:
-	tar -cf C-Programming-Project-Setup-0.1.1-alpha.2-win-source.tar include/sput-1.4.0/* src/*.c .gitignore COPYING install-cpps.cmd Makefile README.md
+tar-source:
+	tar -cvf C-Programming-Project-Setup-0.1.1-alpha.2-mingw32-source.tar include/sput-1.4.0/* src/*.c .gitignore COPYING Makefile README.md
 
-archive-release:
-	tar -cf C-Programming-Project-Setup-0.1.1-alpha.2-win-release.tar bin/* COPYING install-cpps.cmd README.md
+tar-release:
+	tar -cvf C-Programming-Project-Setup-0.1.1-alpha.2-mingw32-release.tar bin/* COPYING README.md
 
-archive-debug:
-	tar -cf C-Programming-Project-Setup-0.1.1-alpha.2-win-debug.tar bin/* COPYING install-cpps.cmd README.md
+tar-debug:
+	tar -cvf C-Programming-Project-Setup-0.1.1-alpha.2-mingw32-debug.tar bin/* COPYING README.md
 
 
 install:
-	install -d /C/CPPS/bin
-	install bin/cpps.exe /C/CPPS/bin
-	install COPYING /C/CPPS
-	install README.md /C/CPPS
+	install -d ~/local/bin
+	install -d ~/local/share/cpps
+	install bin/cpps ~/local/bin
+	install COPYING ~/local/share/cpps
+	install README.md ~/local/share/cpps
 
 uninstall:
-	rm -fr /C/CPPS
+	rm -fr ~/local/bin/cpps
+	rm -fr ~/local/share/cpps/*
+	rmdir ~/local/share/cpps
 
 
